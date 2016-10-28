@@ -1,17 +1,16 @@
 import React, { Component } from 'react'
-import { LoginForm } from './LoginForm'
+import LoginContainer from './LoginContainer'
 import { Provider } from 'react-redux'
 import store from '../store'
 import '../App.css'
 
 class Root extends Component {
 
-	render() {
-        console.log(this.state)
+	render() {        
 	    return (
             <Provider store={store}>
                 <div>
-                    <LoginForm />
+                    <LoginContainer />
                 </div>
             </Provider>
 		)

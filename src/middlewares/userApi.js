@@ -1,19 +1,26 @@
 import { START, SUCCESS, FAIL } from '../constants'
 
 export default store => next => action => {
-	const { callAPI, type, ...rest } = action
+    console.log(action)
+	const { callAPI, type, ...info } = action
 	if (!callAPI) return next(action)
 
 	next({
         type: type + START,
-        ...rest
+        ...info
 	})
 
 	fetch(callAPI)
         .then(response => {
-            response.json().then(function(data) {    
-                next({type: type + SUCCESS, data, ...rest})
-            });
+            // console.log(response.json())
+            // response.json().then(function() {
+            //     console.log(payload)
+            //     next({type: type + SUCCESS, payload, ...info})
+            // });
+            const payload = {
+                Auth: "Denied"
+            }
+            next({type: type + SUCCESS, payload, ...info})
         })
-        .catch(error => next({type: type + FAIL, error, ...rest})))
+        .catch(error => next({type: type + FAIL, error, ...info}))
 }

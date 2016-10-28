@@ -6,18 +6,19 @@ class LoginForm extends Component {
 
     state = {
         user: '',
-        password: ''
+        password: '',
+        isValid: ''
     }
 
     render() {
-        console.log(this.state)
-        const { user, password } = this.state
+        const { loading } = this.props
+        const { user, password, isValid } = this.state
 
        return (
             <form onSubmit={this.handleSubmit}>
                 <h1>Login</h1>
                 <div>
-                    <input value={user} onChange={this.handleChange('text')} name="login" placeholder="Login" />
+                    <input className={isValid} value={user} onChange={this.handleChange('user')} name="login" placeholder="Login" />
                 </div>
                 <div>
                     <input value={password} onChange={this.handleChange('password')} name="password" placeholder="Password" />
@@ -37,16 +38,16 @@ class LoginForm extends Component {
 
     handleSubmit = ev => {
         ev.preventDefault()
-        userCheck(this.state)        
+
+        this.props.userCheck({
+            user: this.state.user,
+            password: this.state.password
+        })        
     }
 }
 
-export default connect((state) => {
-    console.log(state)
+export default connect(({ userCheck }) => {
     return {
-        
-
+        loading: userCheck.loading
     }
-}, {
-    userCheck
-})(LoginForm)
+}, { userCheck })(LoginForm)

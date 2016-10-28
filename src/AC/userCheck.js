@@ -1,8 +1,9 @@
 import { USER_CHECK } from '../constants'
 
-export default function userCheck() {
+export function userCheck(info) {
     return {
         type: USER_CHECK,
-        callAPI: '/login'
+        callAPI: '/login',
+        userInfo: info
     }    
 }
