@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
-import LoginContainer from './LoginContainer'
 import { Provider } from 'react-redux'
 import store from '../store'
+import 'bootstrap/dist/css/bootstrap.css'
 import '../App.css'
 
 class Root extends Component {
 
-	render() {        
+	render() {
 	    return (
             <Provider store={store}>
-                <div>
-                    <LoginContainer />
+                <div className="container">
+                    <div className="col-md-3 form-wrapper text-center center-block">
+                        {this.props.children}
+                    </div>
                 </div>
             </Provider>
 		)

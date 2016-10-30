@@ -1,29 +1,19 @@
-mockServerClient("localhost", 8080).mockAnyResponse({
-    "httpRequest": {
-        "method": "POST",
-        "path": "/login",
-        "body": {
-            "type": "JSON",
-            "value": JSON.stringify({ Username: "foo", Password: "bar" }),
-            "matchType": "STRICT"
-        }
-    },
-    "httpResponse": {
-        "statusCode": 200,
-        "headers": [
-            {
-                "name": "Content-Type",
-                "values": ["application/json; charset=utf-8"]
-            },
-            {
-                "name": "Cache-Control",
-                "values": ["public, max-age=86400"]
-            }
-        ],
-        "body": JSON.stringify({ Auth: "Denied" }),
-        "delay": {
-            "timeUnit": "SECONDS",
-            "value": 1
-        }
+var path = require('path');
+var express = require('express');
+var api = require('./api');
+var bodyParser = require('body-parser');
+var port = 8080;
+
+var app = express();
+
+app.use(bodyParser.json());
+app.use('/', api)
+
+app.listen(port, 'localhost', function (err) {
+    if (err) {
+        console.log(err);
+        return;
     }
+
+    console.log('Listening at http://localhost:' + port);
 });

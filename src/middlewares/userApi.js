@@ -1,7 +1,7 @@
 import { START, SUCCESS, FAIL } from '../constants'
+import $ from 'jquery'
 
 export default store => next => action => {
-    console.log(action)
 	const { callAPI, type, ...info } = action
 	if (!callAPI) return next(action)
 
@@ -10,17 +10,15 @@ export default store => next => action => {
         ...info
 	})
 
-	fetch(callAPI)
-        .then(response => {
-            // console.log(response.json())
-            // response.json().then(function() {
-            //     console.log(payload)
-            //     next({type: type + SUCCESS, payload, ...info})
-            // });
-            const payload = {
-                Auth: "Denied"
-            }
-            next({type: type + SUCCESS, payload, ...info})
+    const {userInfo} = info
+        
+    $.ajax({
+            type: 'POST',
+            url: callAPI,
+            data: userInfo
         })
-        .catch(error => next({type: type + FAIL, error, ...info}))
+        .done(response => {
+            next({type: type + SUCCESS, response, ...info})
+        })
+        .fail(error => next({type: type + FAIL, error, ...info}))
 }

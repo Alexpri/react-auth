@@ -2,15 +2,14 @@ import { USER_CHECK, START, SUCCESS, FAIL } from '../constants'
 
 const defaultState = {
     loading: false,
-    user: '',
-    password: '',
-    isValid: null
+    Username: '',
+    Password: '',
+    isValid: null,
+    Language: null
 }
 
 export default (state = defaultState, action) => {
-    const { type, payload } = action
-
-    console.log(action)
+    const { type, response } = action
 
     switch (type) {
         case USER_CHECK + START:
@@ -19,14 +18,22 @@ export default (state = defaultState, action) => {
             })
 
         case USER_CHECK + SUCCESS:
-            if (payload.Auth == 'Denied') {
-                
-            }
+            const userInfo = response.Auth === 'Logged' ? {
+                Username: response.Username,
+                Password: response.Password,
+                isValid: true,
+                Language: response.Language
+            } : null
+
             return Object.assign({}, state, {
                 loading: false,
-                isValid: payload.Auth == 'Denied' ? false :
-                         payload.Auth == 'Logged' ? true : false
-            })
+                isValid: false
+            }, userInfo)
+
+        case USER_CHECK + FAIL:
+            return Object.assign({}, state, { loading: false }, response)
+        default:
+            break
     }
 
     return state
